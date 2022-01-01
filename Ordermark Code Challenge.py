@@ -63,7 +63,7 @@ def solution(times, directions):
     exit = []
     counter_reset = [0] * len(times)
 
-    for index, time in enumerate(times):
+    for index, value in enumerate(times):
         if directions[index] == 0:
             enter.append([times[index], index])
         elif directions[index] == 1:
@@ -81,16 +81,21 @@ def solution(times, directions):
     # used to enter, then the person who wants to enter goes first
     # Passing through the gate takes 1 second.
     while enter or exit:
-        if enter and enter[0][0] <= time_count:
-            counter_reset[enter[0][1]] = time_count
-            last_value = 0
-            enter.pop(0)
-        elif exit and exit[0][0] <= time_count and ((last_value == 0 and enter[0][0] > time_count) or last_value == -1 or last_value == 1 or not enter):
+        if exit and exit[0][0] <= time_count and (last_value == -1 or last_value == 1 or not enter or (last_value == 0 and enter[0][0] > time_count)):
             counter_reset[exit[0][1]] = time_count
             last_value = 1
             exit.pop(0)
+            print(f"{exit} exit")
+            print(f"exit{last_value}")
+        elif enter and enter[0][0] <= time_count:
+            counter_reset[enter[0][1]] = time_count
+            last_value = 0
+            enter.pop(0)
+            print(f"{enter} enter")
+            print(f"enter{last_value}")
         else:
-            last_value += -1
+            last_value = -1
+            print(f"{last_value} else")
 
         time_count += 1
 
